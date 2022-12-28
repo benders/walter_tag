@@ -2,30 +2,16 @@
 
 import random
 
-def cowsay(text):
-    border = " 1234567890123456789012345678901234567890 "
+def cow(eyes = 'oo'):
     cow = '''       \\   ,__,
-        \\  (oo)____
+        \\  (@@)____
            (__)    )\\
               ||--|| *
 '''
-    result = ""
-#    result += border + "\n"
-#    result += "| " + "WALTER" + " |" + "\n"
-#    result += border + "\n"
-    result += cow
-    return result
+    return cow.replace('@@',eyes,1)
 
-def cow():
-    cow = '''       \\   ,__,
-        \\  (oo)____
-           (__)    )\\
-              ||--|| *
-'''
-    return cow
-
-def walterize():
-    return "Walter is " + get_adjective()
+def walterize(word):
+    return "Walter is " + word
 
 def get_adjective():
     lines = False

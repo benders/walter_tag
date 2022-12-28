@@ -6,13 +6,15 @@
 # MIT License - for Adafruit Industries LLC
 # See https://github.com/r-spacex/SpaceX-API for API info
 
-import time
 import terminalio
 from adafruit_magtag.magtag import MagTag
+import alarm
+import board
+import digitalio
+import neopixel
+import time
 
 from walter import *
-output = cow()
-print(output)
 
 magtag = MagTag()
 #    url=DATA_SOURCE,
@@ -34,15 +36,6 @@ magtag.add_text(
     is_data=True,
 )
 
-magtag.set_text(cow(),0)
-magtag.set_text(walterize(),1)
-
-import board
-import neopixel
-
-num_pixels = 4
-pixels = magtag.peripherals.neopixels
-pixels.brightness = 0.03
 
 RED = (255, 0, 0)
 YELLOW = (255, 150, 0)
@@ -50,20 +43,47 @@ GREEN = (0, 255, 0)
 CYAN = (0, 255, 255)
 BLUE = (0, 0, 255)
 PURPLE = (180, 0, 255)
+BLACK= (0, 0, 0)
+WALTER_COLOR = (32, 240, 141)
 
-FLASH_DELAY_TIME = 0.5
-UPDATE_DELAY_TIME = 300
+UPDATE_DELAY_TIME = 15
 
 def alternate(color_a, color_b):
     for i in range(num_pixels):
         pixels[i] = color_a if (i % 2 == 0) else color_b
     pixels.show()
 
+def color_chase(color, wait):
+    for i in range(num_pixels):
+        pixels[i] = color
+        time.sleep(wait)
+        pixels.show()
+    time.sleep(0.5)
+
+def color_show(color_a, color_b):
+    FLASH_DELAY_TIME = 0.1
+    magtag.peripherals.neopixel_disable = False
+    color_chase(BLUE, FLASH_DELAY_TIME)
+    color_chase(CYAN, FLASH_DELAY_TIME)
+    color_chase(BLACK, FLASH_DELAY_TIME)
+    magtag.peripherals.neopixel_disable = True
+
+def set_mood(adjective = "cool", eyes = "oo", color_a = RED, color_b = GREEN):
+    magtag.set_text(cow(eyes),0)
+    magtag.set_text(walterize(adjective),1)
+    color_show(color_a, color_b)
+
+def snooze():
+    # Create a an alarm that will trigger 10 seconds from now.
+    time_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + UPDATE_DELAY_TIME)
+
+    # Do a light sleep until the alarm wakes us.
+    alarm.light_sleep_until_alarms(time_alarm)
+
+num_pixels = 4
+pixels = magtag.peripherals.neopixels
+pixels.brightness = 0.03
+
 while True:
-    update_time = time.monotonic() + UPDATE_DELAY_TIME
-    while (time.monotonic() < update_time):
-        alternate(RED,GREEN)
-        time.sleep(FLASH_DELAY_TIME)
-        alternate(GREEN,RED)
-        time.sleep(FLASH_DELAY_TIME)
-    magtag.set_text(walterize(),1)
+    set_mood("tired","--",BLUE,CYAN)
+    snooze()
