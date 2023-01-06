@@ -22,7 +22,7 @@ magtag = MagTag()
 #)
 
 magtag.add_text(
-    text_font="/fonts/Major-Mono-Display-12.bdf",
+    text_font="/fonts/Courier-New-12.pcf",
     text_position=(30,90),
     text_scale=1,
     is_data=False,
@@ -30,9 +30,9 @@ magtag.add_text(
 )
 
 magtag.add_text(
-    text_font="/fonts/Arial-Bold-12.pcf",
+    text_font="/fonts/Gidole-Regular-24.pcf",
     text_position=(0,30),
-    text_scale=2,
+    text_scale=1,
     is_data=True,
 )
 
@@ -46,7 +46,7 @@ PURPLE = (180, 0, 255)
 BLACK= (0, 0, 0)
 WALTER_COLOR = (32, 240, 141)
 
-UPDATE_DELAY_TIME = 15
+UPDATE_DELAY_TIME = 900
 
 def alternate(color_a, color_b):
     for i in range(num_pixels):
